@@ -1,2 +1,0 @@
-pip install gymnasium numpy colorama
-pip install "gymnasium[toy-text]"
