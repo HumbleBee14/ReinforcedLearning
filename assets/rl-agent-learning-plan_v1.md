@@ -1,6 +1,6 @@
 # RL Agent Fine-Tuning & Evaluation Learning Plan
 
-> **Goal**: Learn reinforcement learning concepts (RLHF, RLAIF, DPO) and use Roopik IDE as an environment for coding agent experiments.
+> **Goal**: Learn reinforcement learning concepts (RLHF, RLAIF, DPO) and use Roopik IDE as an environment for coding agent experiments - Post training evaluation/Fine-tuning and many more.
 
 
 ---
@@ -23,7 +23,7 @@ A **Code Agent Evaluation & Feedback System** using Roopik IDE as the execution 
 
 | Feature | How It Helps |
 |---------|--------------|
-| Roo-code Agent | Already has code generation capabilities |
+| Dio-code Agent | Already has code generation capabilities (IDE embedded code agent) |
 | Sandbox Environment | Safe execution of generated code |
 | Dev Server (Vite) | Real-time preview of generated UIs |
 | Screenshot Capture | Visual feedback for the reward function and use that for Multimodel LLM as judge |
@@ -54,14 +54,14 @@ Before diving into RLHF/DPO, we need to understand classical RL concepts. Here's
 │                    THE RL LOOP (MDP)                                │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│    ┌─────────┐     Action (aₜ)      ┌─────────────────┐            │
-│    │         │ ────────────────────>│                 │            │
-│    │  AGENT  │                      │   ENVIRONMENT   │            │
-│    │         │ <────────────────────│                 │            │
-│    └─────────┘   State (sₜ₊₁)       └─────────────────┘            │
-│                  Reward (rₜ)                                        │
+│    ┌─────────┐     Action (aₜ)      ┌─────────────────┐              │
+│    │         │ ────────────────────>│                 │             │
+│    │  AGENT  │                      │   ENVIRONMENT   │             │
+│    │         │ <────────────────────│                 │             │
+│    └─────────┘   State (sₜ₊₁)       └─────────────────┘              │
+│                  Reward (rₜ)                                         │
 │                                                                     │
-│   Goal: Learn a POLICY π(a|s) that maximizes cumulative reward     │
+│   Goal: Learn a POLICY π(a|s) that maximizes cumulative reward      │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -143,32 +143,32 @@ Instead of learning Q-values, we directly optimize the policy:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                  EVOLUTION OF RL FOR LLMS                          │
+│                  EVOLUTION OF RL FOR LLMS                           │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  1. Q-Learning (1989)                                               │
 │     └─> Learn Q(s,a) table, select max action                       │
 │                                                                     │
-│  2. Deep Q-Networks (2015, DeepMind Atari)                         │
+│  2. Deep Q-Networks (2015, DeepMind Atari)                          │
 │     └─> Use neural net to approximate Q(s,a)                        │
 │                                                                     │
-│  3. Policy Gradient (REINFORCE, 1992)                              │
+│  3. Policy Gradient (REINFORCE, 1992)                               │
 │     └─> Directly optimize the policy π(a|s)                         │
 │                                                                     │
-│  4. Actor-Critic (A2C, A3C)                                        │
+│  4. Actor-Critic (A2C, A3C)                                         │
 │     └─> Policy (Actor) + Value (Critic) together                    │
 │                                                                     │
-│  5. Proximal Policy Optimization (PPO, 2017)                       │
+│  5. Proximal Policy Optimization (PPO, 2017)                        │
 │     └─> Stable policy gradient with clipping                        │
-│     └─> USED IN RLHF! (InstructGPT, ChatGPT)                       │
+│     └─> USED IN RLHF! (InstructGPT, ChatGPT)                        │
 │                                                                     │
-│  6. RLHF (2022, InstructGPT)                                       │
-│     └─> Human preferences → Reward Model → PPO                     │
+│  6. RLHF (2022, InstructGPT)                                        │
+│     └─> Human preferences → Reward Model → PPO                      │
 │                                                                     │
 │  7. DPO (2023)                                                      │
 │     └─> Skip reward model, directly optimize on preferences         │
 │                                                                     │
-│  8. GRPO (2024, DeepSeek)                                          │
+│  8. GRPO (2024, DeepSeek)                                           │
 │     └─> Group Relative Policy Optimization                          │
 │     └─> Even simpler than DPO                                       │
 │                                                                     │
@@ -203,7 +203,7 @@ advantage = Q(s,a) - V(s)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      REWARD MODEL TRAINING                         │
+│                      REWARD MODEL TRAINING                          │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  Human Preference Data:                                             │
@@ -219,12 +219,12 @@ advantage = Q(s,a) - V(s)
 │  │  Input: (prompt, response)                              │        │
 │  │  Output: Scalar reward (0.0 to 1.0)                     │        │
 │  │                                                         │        │
-│  │  Trained with: Loss = -log(σ(r_winner - r_loser))      │        │
+│  │  Trained with: Loss = -log(σ(r_winner - r_loser))       │        │
 │  │  (Bradley-Terry Model)                                  │        │
 │  └─────────────────────────────────────────────────────────┘        │
 │                           │                                         │
 │                           ▼                                         │
-│  Now we have a "Reward Oracle" that can score ANY response!        │
+│  Now we have a "Reward Oracle" that can score ANY response!         │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -249,12 +249,12 @@ DPO's key insight: We don't NEED a separate reward model!
 │                                                                     │
 │  The DPO Loss:                                                      │
 │  ────────────────────────────────────────────────────────────────   │
-│  L = -log σ(β * (log π(y_w|x)/π_ref(y_w|x)                         │
-│                - log π(y_l|x)/π_ref(y_l|x)))                       │
+│  L = -log σ(β * (log π(y_w|x)/π_ref(y_w|x)                          │
+│                - log π(y_l|x)/π_ref(y_l|x)))                        │
 │                                                                     │
 │  In English:                                                        │
-│  "Make the model MORE LIKELY to produce y_w (winner)               │
-│   and LESS LIKELY to produce y_l (loser)"                          │
+│  "Make the model MORE LIKELY to produce y_w (winner)                │
+│   and LESS LIKELY to produce y_l (loser)"                           │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -301,8 +301,8 @@ DPO's key insight: We don't NEED a separate reward model!
 │                        RLHF Pipeline                        │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  Step 1: Supervised Fine-Tuning (SFT)                      │
-│  ─────────────────────────────────────                     │
+│  Step 1: Supervised Fine-Tuning (SFT)                       │
+│  ─────────────────────────────────────                      │
 │  Base Model → Fine-tune on high-quality examples → SFT Model│
 │                                                             │
 │  Step 2: Reward Model Training                              │
@@ -396,41 +396,41 @@ Where:
 ### High-Level Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          SYSTEM ARCHITECTURE                        │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
+┌────────────────────────────────────────────────────────────────────┐
+│                          SYSTEM ARCHITECTURE                       │
+├────────────────────────────────────────────────────────────────────┤
+│                                                                    │
 │  ┌─────────────────┐     ┌─────────────────────────────────────┐   │
-│  │                 │     │           ROOPIK IDE                 │   │
+│  │                 │     │           ROOPIK IDE                │   │
 │  │  Generator      │────>│  ┌─────────────────────────────────┐│   │
-│  │  Model          │     │  │  Code Execution Environment    ││   │
-│  │  (API/Local)    │     │  │  - Sandbox                     ││   │
-│  │                 │     │  │  - Dev Server (Vite)           ││   │
-│  └────────▲────────┘     │  │  - Browser Preview             ││   │
+│  │  Model          │     │  │  Code Execution Environment     ││   │
+│  │  (API/Local)    │     │  │  - Sandbox                      ││   │
+│  │                 │     │  │  - Dev Server (Vite)            ││   │
+│  └────────▲────────┘     │  │  - Browser Preview              ││   │
 │           │              │  └─────────────────────────────────┘│   │
 │           │              │                 │                   │   │
 │  ┌────────┴────────┐     │                 ▼                   │   │
 │  │                 │     │  ┌─────────────────────────────────┐│   │
-│  │  Preference     │◄────│  │  Feedback Collector            ││   │
-│  │  Dataset        │     │  │  - Errors                      ││   │
-│  │  (JSON/JSONL)   │     │  │  - Screenshots                 ││   │
-│  │                 │     │  │  - Build Status                ││   │
-│  └────────▲────────┘     │  │  - Console Logs                ││   │
+│  │  Preference     │◄────│  │  Feedback Collector             ││   │
+│  │  Dataset        │     │  │  - Errors                       ││   │
+│  │  (JSON/JSONL)   │     │  │  - Screenshots                  ││   │
+│  │                 │     │  │  - Build Status                 ││   │
+│  └────────▲────────┘     │  │  - Console Logs                 ││   │
 │           │              │  └─────────────────────────────────┘│   │
 │           │              └─────────────────────────────────────┘   │
 │           │                              │                         │
-│  ┌────────┴────────┐                    ▼                         │
+│  ┌────────┴────────┐                    ▼                          │
 │  │                 │     ┌─────────────────────────────────────┐   │
-│  │  DPO            │     │           JUDGE MODEL              │   │
-│  │  Fine-Tuning    │◄────│  (GPT-4, Claude, or self-hosted)   │   │
-│  │  (Colab/Cloud)  │     │                                    │   │
-│  │                 │     │  Evaluates:                        │   │
-│  └─────────────────┘     │  - Functionality (0-10)            │   │
-│                          │  - Code Quality (0-10)             │   │
-│                          │  - Matches Prompt (0-10)           │   │
+│  │  DPO            │     │           JUDGE MODEL               │   │
+│  │  Fine-Tuning    │◄────│  (GPT-4, Claude, or self-hosted)    │   │
+│  │  (Colab/Cloud)  │     │                                     │   │
+│  │                 │     │  Evaluates:                         │   │
+│  └─────────────────┘     │  - Functionality (0-10)             │   │
+│                          │  - Code Quality (0-10)              │   │
+│                          │  - Matches Prompt (0-10)            │   │
 │                          └─────────────────────────────────────┘   │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Data Flow
@@ -458,7 +458,7 @@ Where:
                                 ▼
 3. EXECUTION (Roopik IDE)
    ┌─────────────────────────────────────────────────────────────┐
-   │ Sandbox/Dev Server runs the code                           │
+   │ Sandbox/Dev Server runs the code                            │
    │ Result:                                                     │
    │   - compiled: true                                          │
    │   - errors: []                                              │
@@ -469,7 +469,7 @@ Where:
 4. EVALUATION (Judge Model)
    ┌─────────────────────────────────────────────────────────────┐
    │ Judge prompt:                                               │
-   │ "Rate this code on: functionality, quality, prompt match"  │
+   │ "Rate this code on: functionality, quality, prompt match"   │
    │                                                             │
    │ Judge response:                                             │
    │   - functionality: 8/10 (works but missing validation)      │
@@ -487,7 +487,7 @@ Where:
    │        + 0.15 * (judge_quality / 10)                        │
    │        + 0.15 * (judge_prompt_match / 10)                   │
    │                                                             │
-   │ reward = 0.3 + 0.2 + 0.16 + 0.105 + 0.135 = 0.80           │
+   │ reward = 0.3 + 0.2 + 0.16 + 0.105 + 0.135 = 0.80            │
    └─────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
