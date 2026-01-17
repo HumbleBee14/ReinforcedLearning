@@ -160,7 +160,7 @@ First time driving: "Okay, I know heavier cars need more braking distance..."
 
 ---
 
-## For Your Projects
+## For Our Projects
 
 | Project | Approach | Why |
 |---------|----------|-----|
@@ -182,7 +182,7 @@ First time driving: "Okay, I know heavier cars need more braking distance..."
 | **Analogy** | Learning to ride a bike by falling | Reading physics book first |
 | **Pros** | Simple, works anywhere | Efficient, can plan |
 | **Cons** | Needs lots of data | Model might be wrong |
-| **Your focus** | ✅ This is what you'll use | Worth knowing, less common |
+| **Our focus** | ✅ This is what we'll use | Worth knowing, less common |
 
 ---
 
@@ -191,4 +191,4 @@ First time driving: "Okay, I know heavier cars need more braking distance..."
 > "Model-Free = Practice directly on the field"  
 > "Model-Based = Practice in your head first, then play"
 
-For your coding agent journey, **Model-Free RL (PPO, DPO)** is the path. The LLM already has a "world model" built-in from pretraining!
+For our coding agent journey, **Model-Free RL (PPO, DPO)** is the path. The LLM already has a "world model" kinda built-in from pretraining!
