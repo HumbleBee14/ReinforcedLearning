@@ -3,6 +3,7 @@
 > **From Tabular Q-Learning to Neural Networks**
 > This document explains DQN concepts in depth with analogies, code walkthroughs, and answers to common confusions.
 
+NOTE: There's another explanation for the same topic, see **[DQN Deep Q-network.md](../docs/05-dqn-deep-q-network.md)**.
 ---
 
 ## Part 1: The Fundamental Question - What Is Our "Reference"?
