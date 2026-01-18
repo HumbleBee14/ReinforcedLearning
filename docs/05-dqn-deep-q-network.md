@@ -512,4 +512,4 @@ The Lunar Lander project introduces Policy Gradients, bringing us closer to the 
 > The **REWARD** provides knowledge - it's the injection of truth that breaks the loop.
 
 ----
-NOTE: There's another explanation for the same topic, see **[DQN_EXPLAINED.md](../P2/DQN_EXPLAINED.md)**.
+NOTE: There's another explanation for the same topic, see **[DQN_EXPLAINED.md](../P2/DQN_EXPLAINED.md)** and **[DQN_CODE_MATH_DISCUSSION.md](../P2/DQN_CODE_MATH_DISCUSSION.md)**.
