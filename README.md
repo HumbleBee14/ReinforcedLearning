@@ -1,4 +1,4 @@
-# 🎮 RIL - Reinforcement Learning Journey
+# 🎮 Reinforcement Learning by ReinforcedLearning
 
 > **From Frozen Lakes to Coding Agents** — A hands-on learning path through Reinforcement Learning fundamentals to modern LLM agent training.
 
@@ -8,9 +8,9 @@
 
 ---
 
-This is my personal **Reinforcement Learning learning journey**, starting from the absolute basics and building up to training coding agents. Each project builds on the previous one, introducing new concepts progressively. This will keep getting updated as I learn more and more.
+This is my personal **Reinforcement Learning learning notes**, starting from the absolute basics and building up to training coding agents. This will keep getting updated as I learn more and more.
 
-### The Learning Path
+### The Learning Path (v1)
 
 ```
 P0: Frozen Lake          → Understand Agents, States, Actions, Random Policy
@@ -145,11 +145,11 @@ Q[state, action] = Q[state, action] + α * (reward + γ * max(Q[next_state]) - Q
 ### The RL Loop (Markov Decision Process)
 
 ```
-    ┌─────────┐     Action (aₜ)      ┌─────────────────┐
+    ┌─────────┐     Action (aₜ)       ┌─────────────────┐
     │         │ ────────────────────>│                 │
     │  AGENT  │                      │   ENVIRONMENT   │
     │         │ <────────────────────│                 │
-    └─────────┘   State (sₜ₊₁)       └─────────────────┘
+    └─────────┘   State (sₜ₊₁)        └─────────────────┘
                   Reward (rₜ)
 ```
 
@@ -175,44 +175,20 @@ Q[state, action] = Q[state, action] + α * (reward + γ * max(Q[next_state]) - Q
 
 ## Learning Resources
 
-### Videos
-- [David Silver's RL Course (DeepMind)](https://www.youtube.com/playlist?list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ)
-- [Hugging Face Deep RL Course](https://huggingface.co/learn/deep-rl-course/unit0/introduction)
-- [OpenAI Spinning Up](https://spinningup.openai.com/en/latest/)
+For a comprehensive list of courses, papers, blogs, and tools, see **[REFERENCES.md](docs/REFERENCES.md)**.
 
-### Papers
-- [PPO Paper](https://arxiv.org/abs/1707.06347) - Proximal Policy Optimization
-- [DQN Paper](https://arxiv.org/abs/1312.5602) - Playing Atari with Deep RL
-- [InstructGPT Paper](https://arxiv.org/abs/2203.02155) - RLHF for LLMs
-- [DPO Paper](https://arxiv.org/abs/2305.18290) - Direct Preference Optimization
-
-### Libraries
-- [Gymnasium](https://gymnasium.farama.org/) - RL Environments
-- [Stable Baselines3](https://stable-baselines3.readthedocs.io/) - RL Algorithms
-- [TRL](https://huggingface.co/docs/trl/) - LLM Training with RL
-
-### Reference
-- [RL Fundamentals](https://huggingface.co/learn/deep-rl-course/unit0/introduction)
-- [Video](https://www.youtube.com/watch?v=Qpx6WD0qekQ)
----
-
-## End Goal
-
-The ultimate goal of this learning journey is to build a **Coding Agent** that:
-
-1. Generates code in response to prompts
-2. Executes code in a real environment (Roopik IDE)
-3. Receives feedback (compile errors, visual output)
-4. Improves through RLHF/DPO training
-
-```
-     Generate Code → Execute → Feedback → Learn → Repeat
-           ↑                                    │
-           └────────────────────────────────────┘
-```
+### Quick Start Resources
+- 🎓 [Hugging Face Deep RL Course](https://huggingface.co/learn/deep-rl-course/unit0/introduction) - Best beginner course
+- 🛠️ [Gymnasium](https://gymnasium.farama.org/) - Standard RL environment library
 
 ---
 
 ## License
 
 MIT License - Learn, build, and share!
+
+```
+      Generate → Execute → Feedback → Learn → Repeat
+           ↑                                    │
+           └────────────────────────────────────┘
+```
