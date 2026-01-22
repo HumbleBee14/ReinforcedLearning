@@ -8,6 +8,14 @@ NOTE: There's another explanation for the same topic, see **[DQN Deep Q-network.
 
 ## Part 1: The Fundamental Question - What Is Our "Reference"?
 
+<img src="../assets/types-of-learning.jpg" alt="Types of Learning" />
+
+- Supervised Learning uses labeled data as input, and predicts outcomes. It receives feedback from a Loss function acting as a ‘supervisor’.
+
+- Unsupervised Learning uses unlabeled data as input and detects hidden patterns in the data such as clusters or anomalies. It receives no feedback from a supervisor.
+
+- Reinforcement Learning gathers inputs and receives feedback by interacting with the external world. It outputs the best actions that it needs to take while interacting with that world.
+
 ### In Supervised Learning (What You Know)
 
 ```
